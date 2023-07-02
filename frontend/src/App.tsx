@@ -1,9 +1,18 @@
+import Login from "./pages/Login.tsx"
+import Dashboard from "./pages/Dashboard/index.tsx"
+import {Routes,Route} from "react-router-dom"
+
 const App =()=>{
   
 
   return (
     <>
-      <h1 className="bg-cyan-900 text-white p-5">hello</h1>
+    
+    <Routes>
+      <Route path="/" element={<Login/>}/>
+      <Route path="/dashboard" element={<Dashboard/>}/>
+      </Routes>
+      
     </>
   )
 }
