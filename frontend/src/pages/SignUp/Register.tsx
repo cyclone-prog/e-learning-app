@@ -1,25 +1,33 @@
-import * as React from 'react';
+import {useState} from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
+import {Link} from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { postData } from '../../services/axios.service';
 
 
 
 export default function Register() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [fullName, setFullname] = useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    console.log({fullName,email,password});
+    const data = {
+      fullName,
+      email,
+      password
+    };
+    const resp = await postData('user/register',data);
+    console.log(resp);
   };
 
   return (
@@ -51,6 +59,7 @@ export default function Register() {
                   label="Full Name"
                   name="fullname"
                   autoComplete="family-name"
+                  onChange={(e)=>setFullname(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -61,6 +70,7 @@ export default function Register() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={(e)=>setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -72,6 +82,7 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e)=>setPassword(e.target.value)}
                 />
               </Grid>
              
@@ -86,7 +97,7 @@ export default function Register() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="./login" variant="body2">
+                <Link to="/">
                   Already have an account? Sign in
                 </Link>
               </Grid>

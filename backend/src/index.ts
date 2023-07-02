@@ -5,9 +5,11 @@ import indexRouter from "./routes/index";
 import passport from "passport";
 import expressSession from "express-session"
 import { passportInitialize } from "./middlewares/passport.middleware";
+import cors from "cors"
 
 const app = express();
 dbConnection();
+app.use(cors());
 
 app.use(expressSession({
     secret: 'keyboard cat',
@@ -17,7 +19,7 @@ app.use(expressSession({
   }))
 
 passportInitialize();
-
+app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 

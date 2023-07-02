@@ -37,22 +37,20 @@ export const login = async (req: Request, res: Response) => {
 
         const user: any = await User.findOne({ email });
 
-
-
         if (!user) {
             return res.status(401).json({
-                status: false,
+                status: false, 
                 message: 'Invalid user or password',
             })
         } else {
             const matchPass = await user.matchPassword(password);
 
             if (matchPass) {
-                const secretKey: string = process.env.JWT_SECRET_KEY ?? '';
+                const secretKey: string = process.env.SECRET_KEY ?? '';
                 const token = jwt.sign({ email: user.email }, secretKey, {
                     expiresIn: '3d'
                 })
-
+ 
                 const updatedUser: any = await User.findOneAndUpdate({
                     _id: user._id
                 },

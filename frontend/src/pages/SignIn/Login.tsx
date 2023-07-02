@@ -1,11 +1,12 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import {Link} from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -15,6 +16,9 @@ import { GoogleLogin } from '@react-oauth/google';
 
 
 export default function Login() {
+  const [fullName,setFullname] = useState("");
+  const [password,setPassword] = useState("");
+  
   const SERVER_URL = import.meta.env.VITE_SERVER_URL;
   const successResponse = (credentialResponse:object) => {
      window.location.href= SERVER_URL+"/auth/google";
@@ -72,6 +76,7 @@ export default function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={(e)=>{setFullname(e.target.value)}}
               />
               <TextField
                 margin="normal"
@@ -82,6 +87,7 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e)=>{setPassword(e.target.value)}}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -105,14 +111,14 @@ export default function Login() {
 />
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link to="#">
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="./register" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                  <Link to="./signup">
+                  Don't have an account? Sign Up
+                  </Link> 
                 </Grid>
               </Grid>
              
