@@ -16,11 +16,15 @@ import { GoogleLogin } from '@react-oauth/google';
 import { postData } from '../../services/axios.service';
 import { errorToast, successToast } from '../../services/toastify.service';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { login } from './authSlice';
 export default function Login() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL;
   const successResponse = (credentialResponse:object) => {
@@ -38,6 +42,8 @@ export default function Login() {
    const resp = await postData('user/login',data);
     //console.log(resp);
         if(resp.status){
+          // console.log(resp.data.jwt)
+        dispatch(login(resp.data.jwt))
         navigate('/dashboard');
         successToast(resp.message);
       }else{
