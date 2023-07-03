@@ -13,24 +13,36 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { GoogleLogin } from '@react-oauth/google';
-
+import { postData } from '../../services/axios.service';
+import { errorToast, successToast } from '../../services/toastify.service';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [fullName,setFullname] = useState("");
+  const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
-  
+  const navigate = useNavigate();
+
   const SERVER_URL = import.meta.env.VITE_SERVER_URL;
   const successResponse = (credentialResponse:object) => {
      window.location.href= SERVER_URL+"/auth/google";
     }
   
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    const data = {
+      email,
+      password,
+    }
+   //console.log(data)
+   const resp = await postData('user/login',data);
+    //console.log(resp);
+        if(resp.status){
+        navigate('/dashboard');
+        successToast(resp.message);
+      }else{
+        errorToast(resp.message);
+      }
   };
 
   return (
@@ -76,7 +88,7 @@ export default function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={(e)=>{setFullname(e.target.value)}}
+                onChange={(e)=>setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -87,7 +99,7 @@ export default function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(e)=>{setPassword(e.target.value)}}
+                onChange={(e)=>setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}

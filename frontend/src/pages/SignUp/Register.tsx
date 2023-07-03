@@ -10,24 +10,28 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { postData } from '../../services/axios.service';
-
+import {useNavigate} from 'react-router-dom'
+import { errorToast, successToast } from '../../services/toastify.service';
 
 
 export default function Register() {
   const [fullName, setFullname] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({fullName,email,password});
+    // console.log({fullName,email,password});
     const data = {
       fullName,
       email,
       password
     };
     const resp = await postData('user/register',data);
-    console.log(resp);
+    if(resp && resp.data){
+      navigate('/');
+      successToast(resp.message);
+    }
   };
 
   return (
