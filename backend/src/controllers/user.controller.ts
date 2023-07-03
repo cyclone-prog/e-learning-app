@@ -68,7 +68,8 @@ export const login = async (req: Request, res: Response) => {
                     message: 'User logged in successfully',
                     data: {
                         jwt: updatedUser.jwt,
-                        role: updatedUser.roles
+                        role: updatedUser.roles,
+                        
                     }
                 })
             } else {

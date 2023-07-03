@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit"
 interface authInterface{
     isLoggedIn: boolean;
     jwt: string;
+    role:string;
     
 }
 const initialState:authInterface = {
     isLoggedIn: false,
-    jwt: ""
+    jwt: "",
+    role:""
 }
 const authSlice = createSlice({
     name:"Auth",
@@ -15,11 +17,13 @@ const authSlice = createSlice({
     reducers:{
         login:(state,data)=>{
             state.isLoggedIn = true;
-            state.jwt = data.payload;
+            state.jwt = data.payload.jwt;
+            state.role= data.payload.role;
         },
         logout:(state) =>{
             state.isLoggedIn = false;
             state.jwt = "";
+            state.role = "";
         }
     }
 })

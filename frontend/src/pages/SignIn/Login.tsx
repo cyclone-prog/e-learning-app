@@ -43,7 +43,7 @@ export default function Login() {
     //console.log(resp);
         if(resp.status){
           // console.log(resp.data.jwt)
-        dispatch(login(resp.data.jwt))
+        dispatch(login(resp.data))
         navigate('/dashboard');
         successToast(resp.message);
       }else{
